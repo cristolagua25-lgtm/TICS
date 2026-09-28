@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Comunicación &amp; Lenguaje — Guía interactiva</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    --bg:#FAFAFD;
+    --bg-elevated:#FFFFFF;
+    --ink:#14151C;
+    --ink-soft:#5A5D6B;
+    --line:#E7E7F0;
+    --chip-bg:#F1F1F8;
+
+    --accent:#4C4CFF;
+    --accent-ink:#FFFFFF;
+    --accent-2:#FF7A29;
+
+    --c-a:#4C4CFF; --c-a-bg:#EBEBFF; --c-a-soft:#EBEBFF;
+    --c-b:#FF7A29; --c-b-bg:#FFECDD;
+    --c-c:#FF3D8A; --c-c-bg:#FFE4EF;
+    --c-d:#00B894; --c-d-bg:#DEF7EF;
+
+    --correct:#1FAA6D; --correct-bg:#E1F7ED;
+    --wrong:#E5484D; --wrong-bg:#FBE4E5;
+    --shadow:0 1px 2px rgba(20,18,40,.06), 0 12px 30px rgba(30,20,80,.08);
+    --font-head:'Fraunces', Georgia, serif;
+    --font-body:'Work Sans', -apple-system, sans-serif;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101116;
+      --bg-elevated:#1A1B23;
+      --ink:#F1F1F7;
+      --ink-soft:#A9ACBD;
+      --line:#2B2D3A;
+      --chip-bg:#20212B;
+      --accent:#8C8CFF;
+      --accent-ink:#0C0C14;
+      --accent-2:#FF9757;
+      --c-a:#8C8CFF; --c-a-bg:#23243A;
+      --c-b:#FF9757; --c-b-bg:#332419;
+      --c-c:#FF6FA8; --c-c-bg:#33202A;
+      --c-d:#2FE0B4; --c-d-bg:#16302A;
+      --correct:#5FD79A; --correct-bg:#153228;
+      --wrong:#F0868A; --wrong-bg:#3A2224;
+      --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101116; --bg-elevated:#1A1B23; --ink:#F1F1F7; --ink-soft:#A9ACBD;
+    --line:#2B2D3A; --chip-bg:#20212B;
+    --accent:#8C8CFF; --accent-ink:#0C0C14; --accent-2:#FF9757;
+    --c-a:#8C8CFF; --c-a-bg:#23243A; --c-b:#FF9757; --c-b-bg:#332419;
+    --c-c:#FF6FA8; --c-c-bg:#33202A; --c-d:#2FE0B4; --c-d-bg:#16302A;
+    --correct:#5FD79A; --correct-bg:#153228; --wrong:#F0868A; --wrong-bg:#3A2224;
+    --shadow:0 1px 2px rgba(0,0,0,.5), 0 12px 30px rgba(0,0,0,.4);
+  }
+  html{scroll-padding-top:calc(72px + env(safe-area-inset-top,0px)); scroll-behavior:smooth;}
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--bg); color:var(--ink); font-family:var(--font-body); line-height:1.55; -webkit-font-smoothing:antialiased; }
+  ::selection{ background:var(--accent); color:var(--accent-ink); }
+  a{color:var(--accent);}
+  .wrap{max-width:940px; margin:0 auto; padding:0 24px;}
+
+  /* ---------- Topbar ---------- */
+  .topbar{ position:sticky; top:env(safe-area-inset-top,0px); z-index:40; background:color-mix(in srgb, var(--bg) 85%, transparent); backdrop-filter:blur(10px); border-bottom:1px solid var(--line); }
+  .topbar-inner{ max-width:940px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; justify-content:space-between; gap:16px; }
+  .brand{ font-family:var(--font-head); font-weight:600; font-size:1.05rem; display:flex; align-items:center; gap:8px; white-space:nowrap; }
+  .brand .mark{ background:linear-gradient(135deg,var(--c-a),var(--c-c)); -webkit-background-clip:text; background-clip:text; color:transparent; font-size:1.3rem; }
+  .tabs{display:flex; gap:6px; background:var(--chip-bg); padding:4px; border-radius:999px;}
+  .tab-btn{ border:none; background:transparent; font-family:var(--font-body); font-weight:600; font-size:.86rem; padding:8px 16px; border-radius:999px; cursor:pointer; color:var(--ink-soft); transition:background .25s ease, color .25s ease; }
+  .tab-btn.is-active{background:var(--accent); color:var(--accent-ink);}
+  .theme-btn{ border:1px solid var(--line); background:var(--bg-elevated); color:var(--ink); width:36px; height:36px; border-radius:50%; cursor:pointer; font-size:1rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:transform .2s ease; }
+  .theme-btn:hover{transform:rotate(20deg);}
+
+  /* ---------- Hero ---------- */
+  .hero{position:relative; overflow:hidden; padding:60px 0 40px; border-bottom:1px solid var(--line);}
+  .hero-blobs{ position:absolute; inset:0; z-index:0; opacity:.55; }
+  .hero-blobs svg{ width:100%; height:100%; }
+  .hero .wrap{ position:relative; z-index:1; }
+  .kicker{ font-family:var(--font-body); font-weight:700; font-size:.82rem; color:var(--c-b); letter-spacing:.02em; }
+  h1.display{ font-family:var(--font-head); font-weight:600; font-size:clamp(2.1rem,5.4vw,3.6rem); margin:.35em 0 .3em; letter-spacing:-.01em; max-width:15ch; }
+  h1.display .grad{ background:linear-gradient(100deg,var(--c-a),var(--c-c) 60%,var(--c-b)); -webkit-background-clip:text; background-clip:text; color:transparent; }
+  .hero p.lede{ max-width:58ch; color:var(--ink-soft); font-size:1.05rem; }
+  .hero-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:26px;}
+  .btn{ font-family:var(--font-body); font-weight:600; font-size:.92rem; cursor:pointer; border-radius:10px; padding:12px 20px; border:1px solid transparent; transition:transform .18s ease, box-shadow .18s ease, background .2s ease; display:inline-flex; align-items:center; gap:8px; }
+  .btn:active{transform:scale(.97);}
+  .btn-primary{background:var(--accent); color:var(--accent-ink); box-shadow:var(--shadow);}
+  .btn-primary:hover{transform:translateY(-2px);}
+  .btn-ghost{background:transparent; border-color:var(--line); color:var(--ink);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+  .hero-figure{ margin-top:34px; }
+  .hero-figure svg{ width:100%; height:auto; display:block; }
+
+  /* ---------- Units ---------- */
+  .unit{ display:none; padding:52px 0 20px; }
+  .unit.is-active{ display:block; animation:fadeIn .4s ease; }
+  @keyframes fadeIn{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:none;} }
+
+  .bloque{ margin-bottom:8px; }
+  .block-head-row{ display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:22px; flex-wrap:wrap; }
+  .block-head{ flex:1; min-width:220px; }
+  .block-head .n{ font-family:var(--font-head); font-size:.85rem; font-style:italic; display:block; margin-bottom:4px; font-weight:600; }
+  .block-head h2{ font-family:var(--font-head); font-weight:600; font-size:clamp(1.5rem,3vw,2rem); margin:0; }
+  .block-head p{ color:var(--ink-soft); margin:.5em 0 0; max-width:64ch; }
+  .bloque[data-block="a"] .block-head{ border-left:3px solid var(--c-a); padding-left:16px; } .bloque[data-block="a"] .n{ color:var(--c-a); }
+  .bloque[data-block="b"] .block-head{ border-left:3px solid var(--c-b); padding-left:16px; } .bloque[data-block="b"] .n{ color:var(--c-b); }
+  .bloque[data-block="c"] .block-head{ border-left:3px solid var(--c-c); padding-left:16px; } .bloque[data-block="c"] .n{ color:var(--c-c); }
+  .bloque[data-block="d"] .block-head{ border-left:3px solid var(--c-d); padding-left:16px; } .bloque[data-block="d"] .n{ color:var(--c-d); }
+
+  .listen-btn{
+    flex-shrink:0; display:inline-flex; align-items:center; gap:8px; border:1.5px solid var(--line);
+    background:var(--bg-elevated); border-radius:999px; padding:9px 16px 9px 12px; cursor:pointer;
+    font-family:var(--font-body); font-weight:600; font-size:.84rem; color:var(--ink); transition:all .2s ease;
+  }
+  .listen-btn svg{ width:16px; height:16px; flex-shrink:0; }
+  .bloque[data-block="a"] .listen-btn{ color:var(--c-a); } .bloque[data-block="a"] .listen-btn:hover{ border-color:var(--c-a); background:var(--c-a-bg); }
+  .bloque[data-block="b"] .listen-btn{ color:var(--c-b); } .bloque[data-block="b"] .listen-btn:hover{ border-color:var(--c-b); background:var(--c-b-bg); }
+  .bloque[data-block="c"] .listen-btn{ color:var(--c-c); } .bloque[data-block="c"] .listen-btn:hover{ border-color:var(--c-c); background:var(--c-c-bg); }
+  .bloque[data-block="d"] .listen-btn{ color:var(--c-d); } .bloque[data-block="d"] .listen-btn:hover{ border-color:var(--c-d); background:var(--c-d-bg); }
+  .listen-btn.is-playing{ background:var(--ink); color:var(--bg); border-color:var(--ink); }
+
+  .card{ background:var(--bg-elevated); border:1px solid var(--line); border-left-width:4px; border-radius:14px; margin-bottom:14px; overflow:hidden; transition:box-shadow .2s ease; }
+  .card:hover{ box-shadow:var(--shadow); }
+  .card[data-block="a"]{ border-left-color:var(--c-a); } .card[data-block="a"] .icon{ background:var(--c-a-bg); color:var(--c-a); }
+  .card[data-block="b"]{ border-left-color:var(--c-b); } .card[data-block="b"] .icon{ background:var(--c-b-bg); color:var(--c-b); }
+  .card[data-block="c"]{ border-left-color:var(--c-c); } .card[data-block="c"] .icon{ background:var(--c-c-bg); color:var(--c-c); }
+  .card[data-block="d"]{ border-left-color:var(--c-d); } .card[data-block="d"] .icon{ background:var(--c-d-bg); color:var(--c-d); }
+
+  .card summary{ list-style:none; cursor:pointer; padding:18px 20px; display:flex; align-items:center; gap:14px; font-family:var(--font-head); font-weight:600; font-size:1.05rem; -webkit-tap-highlight-color:transparent; }
+  .card summary::-webkit-details-marker{display:none;}
+  .card .icon{ flex-shrink:0; width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; }
+  .card .icon svg{width:18px; height:18px;}
+  .card summary .chev{ margin-left:auto; color:var(--ink-soft); transition:transform .3s ease; flex-shrink:0; }
+  .card[open] summary .chev{ transform:rotate(90deg); }
+  .card-body{ padding:0 20px 22px 68px; color:var(--ink-soft); }
+  .card-body p{ margin:.4em 0; }
+  .card-body ul{ margin:.4em 0; padding-left:1.1em; }
+  .card-body li{ margin:.25em 0; }
+  .card-body strong{ color:var(--ink); }
+
+  /* function chips */
+  .chips{ display:flex; flex-wrap:wrap; gap:8px; margin:10px 0 4px; }
+  .chip{ font-family:var(--font-body); font-weight:600; font-size:.84rem; padding:9px 14px; border-radius:999px; border:1px solid var(--line); background:var(--chip-bg); color:var(--ink); cursor:pointer; transition:background .2s ease, color .2s ease, border-color .2s ease; }
+  .chip.is-active{ background:var(--c-a); color:#fff; border-color:var(--c-a); }
+  .chip-panel{ margin-top:12px; padding:16px 18px; border-radius:10px; background:var(--c-a-bg); display:none; animation:fadeIn .25s ease; }
+  .chip-panel.is-visible{ display:block; }
+  .chip-panel .fn-name{ font-family:var(--font-head); font-weight:600; color:var(--ink); display:block; margin-bottom:4px;}
+
+  /* flip cards */
+  .flip-grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:14px; margin-top:10px; }
+  .flip-card{ perspective:1200px; height:172px; cursor:pointer; }
+  .flip-inner{ position:relative; width:100%; height:100%; transition:transform .55s cubic-bezier(.4,.2,.2,1); transform-style:preserve-3d; }
+  .flip-card.is-flipped .flip-inner{ transform:rotateY(180deg); }
+  .flip-face{ position:absolute; inset:0; backface-visibility:hidden; border-radius:12px; border:1px solid var(--line); padding:16px; display:flex; flex-direction:column; justify-content:center; gap:8px; }
+  .flip-front{ background:var(--bg-elevated); }
+  .flip-front .icon{ width:32px; height:32px; border-radius:8px; background:var(--c-c-bg); display:flex; align-items:center; justify-content:center; color:var(--c-c);}
+  .flip-front .icon svg{ width:17px; height:17px; }
+  .flip-front h3{ font-family:var(--font-head); font-size:1rem; margin:0; }
+  .flip-front .hint{ font-size:.78rem; color:var(--ink-soft); }
+  .flip-back{ background:var(--c-c); color:#fff; transform:rotateY(180deg); font-size:.86rem; overflow:auto;}
+  .flip-back strong{display:block; margin-bottom:6px; font-family:var(--font-head);}
+
+  /* voice demo */
+  .voice-demo{ background:var(--bg-elevated); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-top:6px; }
+  .voice-demo h3{ font-family:var(--font-head); margin:0 0 4px; font-size:1.1rem; }
+  .voice-demo p.note{ color:var(--ink-soft); font-size:.88rem; margin:0 0 16px; }
+  .sliders{ display:grid; gap:16px; }
+  .slider-row label{ display:flex; justify-content:space-between; font-weight:600; font-size:.88rem; margin-bottom:6px; }
+  .slider-row label span{ color:var(--c-d); font-weight:700; }
+  input[type=range]{ width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--line); outline:none; }
+  input[type=range]::-webkit-slider-thumb{ -webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--c-d); cursor:pointer; border:3px solid var(--bg-elevated); box-shadow:0 0 0 1px var(--c-d); }
+  .wave-box{ margin-top:16px; height:86px; border-radius:10px; background:var(--c-d-bg); display:flex; align-items:center; justify-content:center; gap:3px; overflow:hidden; padding:0 14px; }
+  .wave-box i{ display:block; width:5px; background:var(--c-d); border-radius:3px; transition:height .12s ease, opacity .3s ease; }
+  .voice-read{ margin-top:12px; font-size:.86rem; color:var(--ink-soft); }
+  .voice-read strong{ color:var(--ink); }
+
+  .obj-row{ display:flex; gap:22px; flex-wrap:wrap; margin:14px 0 4px; }
+  .obj-row .obj{ display:flex; flex-direction:column; align-items:center; gap:6px; width:74px; }
+  .obj-row .obj svg{ width:34px; height:34px; color:var(--c-c); }
+  .obj-row .obj span{ font-size:.74rem; color:var(--ink-soft); text-align:center; }
+
+  /* figures */
+  figure.figure{ margin:18px 0 8px; padding:18px 18px 14px; border:1px solid var(--line); border-radius:12px; background:var(--bg-elevated); }
+  figure.figure svg{ width:100%; height:auto; display:block; }
+  figure.figure figcaption{ margin-top:10px; font-size:.8rem; color:var(--ink-soft); text-align:center; font-style:italic; }
+  figure.figure figcaption strong{ font-style:normal; color:var(--ink); }
+
+  .divider{ display:flex; align-items:center; gap:14px; margin:44px 0 30px; color:var(--ink-soft); }
+  .divider::before, .divider::after{ content:""; flex:1; height:1px; background:var(--line); }
+  .divider svg{ width:26px; height:26px; flex-shrink:0; }
+
+  /* ---------- Quiz ---------- */
+  .quiz-section{ padding:8px 0 90px; }
+  .quiz-head{ text-align:center; max-width:60ch; margin:0 auto 30px; }
+  .quiz-head h2{ font-family:var(--font-head); font-size:clamp(1.6rem,3vw,2.1rem); margin:.2em 0; }
+  .quiz-head p{ color:var(--ink-soft); }
+  .q-card{ background:var(--bg-elevated); border:1px solid var(--line); border-radius:14px; padding:20px 22px; margin-bottom:14px; }
+  .q-card .q-num{ font-family:var(--font-head); color:var(--accent); font-style:italic; font-size:.9rem; }
+  .q-card p.q-text{ font-weight:600; margin:.3em 0 12px; font-size:1rem; }
+  .opt{ display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:9px; border:1px solid var(--line); margin-bottom:8px; cursor:pointer; transition:background .15s ease, border-color .15s ease; font-size:.94rem; }
+  .opt:hover{ border-color:var(--accent); }
+  .opt input{ accent-color:var(--accent); width:16px; height:16px; flex-shrink:0; }
+  .opt.correct{ background:var(--correct-bg); border-color:var(--correct); }
+  .opt.wrong{ background:var(--wrong-bg); border-color:var(--wrong); }
+  .quiz-actions{ display:flex; align-items:center; gap:16px; flex-wrap:wrap; margin-top:22px; }
+  .score-panel{ display:none; text-align:center; margin-top:26px; padding:26px; border-radius:14px; background:var(--bg-elevated); border:1px solid var(--line); }
+  .score-panel.is-visible{ display:block; animation:fadeIn .4s ease; }
+  .score-panel .big{ font-family:var(--font-head); font-size:2.6rem; font-weight:700; color:var(--accent); }
+  .score-panel .best{ font-size:.85rem; color:var(--ink-soft); margin-top:6px; }
+
+  footer{ text-align:center; color:var(--ink-soft); font-size:.82rem; padding:26px 24px 120px; }
+
+  /* ---------- Mini audio player ---------- */
+  .audio-bar{
+    position:fixed; left:50%; bottom:calc(18px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%) translateY(120%);
+    background:var(--ink); color:var(--bg); border-radius:999px; padding:10px 12px 10px 18px;
+    display:flex; align-items:center; gap:14px; box-shadow:0 10px 30px rgba(0,0,0,.3); z-index:60;
+    transition:transform .3s ease; max-width:92vw;
+  }
+  .audio-bar.is-visible{ transform:translateX(-50%) translateY(0); }
+  .audio-bar .label{ font-size:.82rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:38vw; }
+  .audio-bar button{ background:var(--bg); color:var(--ink); border:none; width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; flex-shrink:0; }
+  .audio-bar button svg{ width:15px; height:15px; }
+  .audio-bar .stop-btn{ background:transparent; color:var(--bg); }
+
+  @media (max-width:640px){
+    .card-body{ padding-left:20px; }
+    .topbar-inner{ padding:12px 16px; }
+    .tab-btn{ padding:7px 12px; font-size:.8rem; }
+    .audio-bar .label{ max-width:32vw; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ animation-duration:.001s !important; transition-duration:.001s !important; } }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand"><span class="mark">“</span>Comunicación &amp; Lenguaje</div>
+    <nav class="tabs" id="tabs">
+      <button class="tab-btn is-active" data-target="unidad1">Unidad 1</button>
+      <button class="tab-btn" data-target="unidad2">Unidad 2</button>
+      <button class="tab-btn" data-target="quiz">Autoevaluación</button>
+    </nav>
+    <button class="theme-btn" id="themeBtn" title="Cambiar tema" aria-label="Cambiar tema claro/oscuro">◐</button>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="hero-blobs" aria-hidden="true">
+    <svg viewBox="0 0 1000 400" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <filter id="blur1"><feGaussianBlur stdDeviation="60"/></filter>
+        <radialGradient id="gA" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--c-a)" stop-opacity=".55"/><stop offset="100%" stop-color="var(--c-a)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gB" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--c-b)" stop-opacity=".5"/><stop offset="100%" stop-color="var(--c-b)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gC" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--c-c)" stop-opacity=".45"/><stop offset="100%" stop-color="var(--c-c)" stop-opacity="0"/></radialGradient>
+        <radialGradient id="gD" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="var(--c-d)" stop-opacity=".45"/><stop offset="100%" stop-color="var(--c-d)" stop-opacity="0"/></radialGradient>
+      </defs>
+      <g filter="url(#blur1)">
+        <circle cx="120" cy="60" r="180" fill="url(#gA)"/>
+        <circle cx="880" cy="40" r="160" fill="url(#gB)"/>
+        <circle cx="950" cy="340" r="200" fill="url(#gC)"/>
+        <circle cx="60" cy="360" r="150" fill="url(#gD)"/>
+      </g>
+    </svg>
+  </div>
+  <div class="wrap">
+    <span class="kicker">Contabilidad y Auditoría · Comunicación y Lenguaje</span>
+    <h1 class="display">Cómo decimos <span class="grad">lo que decimos</span></h1>
+    <p class="lede">Guía de estudio interactiva sobre comunicación, lenguaje, redacción académica, comunicación no verbal y paralingüística — con diagramas propios y audiolibro por bloque.</p>
+    <div class="hero-actions">
+      <button class="btn btn-primary" data-goto="unidad1">Empezar por la Unidad 1 →</button>
+      <button class="btn btn-ghost" data-goto="quiz">Ir directo a la autoevaluación</button>
+    </div>
+
+    <div class="hero-figure" aria-hidden="false">
+      <svg viewBox="0 0 780 220" xmlns="http://www.w3.org/2000/svg">
+        <line x1="120" y1="90" x2="660" y2="90" stroke="var(--line)" stroke-width="2"/>
+        <path d="M120 90 C 260 30, 520 30, 660 90" stroke="var(--c-a)" stroke-width="2.5" fill="none" stroke-dasharray="1 9" stroke-linecap="round"/>
+        <circle cx="90" cy="90" r="42" fill="var(--c-a-bg)" stroke="var(--c-a)" stroke-width="2"/>
+        <circle cx="70" cy="80" r="9" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M55 108c4-12 12-18 24-18" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <text x="90" y="150" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" fill="var(--ink)">Emisor</text>
+
+        <circle cx="690" cy="90" r="42" fill="var(--c-c-bg)" stroke="var(--c-c)" stroke-width="2"/>
+        <circle cx="670" cy="80" r="9" fill="none" stroke="var(--ink)" stroke-width="2"/>
+        <path d="M655 110c4-14 14-20 30-18" stroke="var(--ink)" stroke-width="2" fill="none" stroke-linecap="round"/>
+        <text x="690" y="150" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="13" fill="var(--ink)">Receptor</text>
+
+        <rect x="330" y="66" width="120" height="46" rx="10" fill="var(--c-b-bg)" stroke="var(--c-b)" stroke-width="2"/>
+        <text x="390" y="94" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="13" fill="var(--c-b)">Mensaje</text>
+
+        <text x="390" y="185" text-anchor="middle" font-family="var(--font-body)" font-size="11.5" fill="var(--ink-soft)">Código · Canal · Contexto</text>
+
+        <path d="M250 45q10 12 0 24" stroke="var(--ink-soft)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <path d="M260 40q14 16 0 34" stroke="var(--ink-soft)" stroke-width="1.6" fill="none" stroke-linecap="round"/>
+        <text x="255" y="30" text-anchor="middle" font-family="var(--font-body)" font-size="10.5" fill="var(--ink-soft)">ruido</text>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<main class="wrap">
+
+  <!-- ===================== UNIDAD 1 ===================== -->
+  <section id="unidad1" class="unit is-active">
+
+    <div class="bloque" data-block="a" id="bloqueA">
+      <div class="block-head-row">
+        <div class="block-head">
+          <span class="n">Bloque A</span>
+          <h2>Comunicación, lenguaje y roles del habla</h2>
+          <p>Los fundamentos teóricos que distinguen comunicación, expresión y lenguaje, y cómo estos se organizan gramaticalmente.</p>
+        </div>
+        <button class="listen-btn" data-listen="a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="listen-label">Escuchar bloque</span></button>
+      </div>
+
+      <details class="card" data-block="a" open>
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg></span>La comunicación<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Proceso de intercambio de información entre un <strong>emisor</strong> y un <strong>receptor</strong>, a través de un canal, empleando un código común, dentro de un contexto determinado y sujeto a posibles interferencias.</p>
+          <p><strong>Elementos del proceso:</strong></p>
+          <ul>
+            <li><strong>Emisor / receptor:</strong> quien produce y quien recibe el mensaje.</li>
+            <li><strong>Mensaje:</strong> el contenido transmitido.</li>
+            <li><strong>Código:</strong> sistema de signos compartido (p. ej. el idioma).</li>
+            <li><strong>Canal:</strong> medio físico por el que viaja el mensaje.</li>
+            <li><strong>Contexto:</strong> situación que rodea el acto comunicativo.</li>
+            <li><strong>Ruido:</strong> cualquier interferencia que distorsiona el mensaje.</li>
+            <li><strong>Retroalimentación:</strong> respuesta del receptor que confirma la recepción.</li>
+          </ul>
+          <p><strong>Tipos:</strong> verbal / no verbal · oral / escrita · unidireccional / bidireccional · intrapersonal / interpersonal / masiva.</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg></span>La expresión<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Capacidad de exteriorizar ideas, emociones o estados internos mediante signos lingüísticos o no lingüísticos.</p>
+          <p>A diferencia de la comunicación, la expresión <strong>no exige necesariamente un receptor intencional ni retroalimentación</strong>: alguien puede expresarse (llorar, cantar, escribir un diario) sin buscar comunicarse con otro.</p>
+          <p><strong>Formas:</strong> verbal, gestual, artística, corporal.</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 4a3 3 0 0 0-3 3v1a3 3 0 0 0-1 5.8V15a3 3 0 0 0 3 3h1M15 4a3 3 0 0 1 3 3v1a3 3 0 0 1 1 5.8V15a3 3 0 0 1-3 3h-1M9 4v16M15 4v16"/></svg></span>El lenguaje<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Facultad humana, de base biológica y naturaleza simbólica, que permite representar la realidad y comunicarse mediante sistemas de signos.</p>
+          <p><strong>Tricotomía de Saussure:</strong></p>
+          <ul>
+            <li><strong>Lenguaje:</strong> la facultad universal, común a toda la especie humana.</li>
+            <li><strong>Lengua:</strong> el sistema convencional y social propio de una comunidad (el español, el quichua...).</li>
+            <li><strong>Habla:</strong> la realización individual y concreta de la lengua por parte de un hablante.</li>
+          </ul>
+          <figure class="figure">
+            <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="160" cy="105" r="88" fill="none" stroke="var(--c-a)" stroke-width="2"/>
+              <circle cx="160" cy="105" r="58" fill="none" stroke="var(--c-c)" stroke-width="2"/>
+              <circle cx="160" cy="105" r="28" fill="var(--c-b-bg)" stroke="var(--c-b)" stroke-width="1.8"/>
+              <text x="160" y="110" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="12" fill="var(--c-b)">Habla</text>
+              <text x="160" y="38" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" fill="var(--c-c)">Lengua</text>
+              <text x="160" y="18" text-anchor="middle" font-family="var(--font-body)" font-weight="600" font-size="12" fill="var(--c-a)">Lenguaje</text>
+            </svg>
+            <figcaption><strong>Figura 1.</strong> Niveles de la tricotomía de Saussure: el lenguaje contiene la lengua, y esta contiene el habla.</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5"/></svg></span>Funciones del lenguaje (Jakobson)<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Roman Jakobson asoció cada función del lenguaje con el elemento del proceso comunicativo en el que se centra. Toca cada función para ver su definición y un ejemplo:</p>
+          <figure class="figure">
+            <svg viewBox="0 0 320 260" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="160" cy="130" r="34" fill="var(--c-a)"/>
+              <text x="160" y="134" text-anchor="middle" font-family="var(--font-body)" font-weight="700" font-size="11" fill="#fff">Mensaje</text>
+              <g font-family="var(--font-body)" font-size="10.5" fill="var(--ink)" font-weight="600" text-anchor="middle">
+                <line x1="160" y1="96" x2="160" y2="34" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="160" cy="26" r="18" fill="var(--c-b-bg)"/><text x="160" y="30">Poética</text>
+
+                <line x1="188" y1="112" x2="248" y2="70" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="262" cy="60" r="22" fill="var(--c-c-bg)"/><text x="262" y="64">Emotiva</text>
+
+                <line x1="192" y1="150" x2="252" y2="184" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="266" cy="196" r="24" fill="var(--c-d-bg)"/><text x="266" y="200">Conativa</text>
+
+                <line x1="160" y1="164" x2="160" y2="226" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="160" cy="236" r="22" fill="var(--c-a-bg)"/><text x="160" y="240">Referencial</text>
+
+                <line x1="128" y1="150" x2="68" y2="184" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="54" cy="196" r="20" fill="var(--c-b-bg)"/><text x="54" y="200">Fática</text>
+
+                <line x1="132" y1="112" x2="72" y2="70" stroke="var(--line)" stroke-width="1.5"/>
+                <circle cx="58" cy="58" r="26" fill="var(--c-c-bg)"/><text x="58" y="62">Metaling.</text>
+              </g>
+            </svg>
+            <figcaption><strong>Figura 2.</strong> Las seis funciones del lenguaje giran en torno al mensaje, cada una centrada en un elemento distinto del proceso comunicativo.</figcaption>
+          </figure>
+          <div class="chips" id="jakobsonChips"></div>
+          <div class="chip-panel" id="jakobsonPanel"></div>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5h16v11H8l-4 4z"/></svg></span>El lenguaje verbal<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Sistema de comunicación basado en signos lingüísticos, orales o escritos, articulados según reglas fonológicas, morfológicas, sintácticas y semánticas.</p>
+          <p><strong>Características:</strong></p>
+          <ul>
+            <li><strong>Arbitrariedad del signo:</strong> no hay relación natural entre significante y significado.</li>
+            <li><strong>Doble articulación:</strong> combina unidades mínimas sin significado (fonemas) en unidades con significado (morfemas/palabras).</li>
+            <li><strong>Productividad:</strong> permite crear infinitos mensajes nuevos con un número finito de unidades.</li>
+            <li><strong>Desplazamiento:</strong> permite referirse a lo ausente, pasado, futuro o hipotético.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 8a3 3 0 1 1 3.6 2.9M21 20c0-2.5-1.8-4.6-4.2-5.4"/></svg></span>Roles del lenguaje<span class="chev">›</span></summary>
+        <div class="card-body">
+          <ul>
+            <li><strong>Cognitivo:</strong> instrumento del pensamiento; pensamos con las categorías que nos ofrece la lengua.</li>
+            <li><strong>Comunicativo:</strong> vehículo principal de la interacción social.</li>
+            <li><strong>Identitario / social:</strong> marca de pertenencia a un grupo, región o cultura (acentos, jergas).</li>
+            <li><strong>Regulador:</strong> organiza la conducta propia (habla interior) y ajena (instrucciones, normas).</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>Morfosintaxis<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Nivel de análisis que estudia conjuntamente:</p>
+          <ul>
+            <li><strong>Morfología:</strong> estructura interna de las palabras — raíz, morfemas flexivos (género, número, tiempo) y derivativos (prefijos, sufijos).</li>
+            <li><strong>Sintaxis:</strong> combinación de palabras en sintagmas y oraciones, y las funciones que cumplen (sujeto, predicado, complementos).</li>
+          </ul>
+          <p>Ejemplo: en <em>“las niñas cantaban”</em>, <em>niñ-</em> es raíz, <em>-a</em> marca género, <em>-s</em> marca número (morfología); y “las niñas” funciona como sujeto de “cantaban” (sintaxis).</p>
+          <figure class="figure">
+            <svg viewBox="0 0 340 170" xmlns="http://www.w3.org/2000/svg" font-family="var(--font-body)">
+              <text x="170" y="26" text-anchor="middle" font-weight="700" font-size="12" fill="var(--ink)">Oración</text>
+              <line x1="170" y1="34" x2="90" y2="60" stroke="var(--line)" stroke-width="1.6"/>
+              <line x1="170" y1="34" x2="250" y2="60" stroke="var(--line)" stroke-width="1.6"/>
+              <text x="90" y="76" text-anchor="middle" font-weight="600" font-size="11.5" fill="var(--c-a)">Sujeto</text>
+              <text x="250" y="76" text-anchor="middle" font-weight="600" font-size="11.5" fill="var(--c-b)">Predicado</text>
+              <line x1="90" y1="84" x2="90" y2="106" stroke="var(--line)" stroke-width="1.6"/>
+              <line x1="250" y1="84" x2="250" y2="106" stroke="var(--line)" stroke-width="1.6"/>
+              <text x="90" y="122" text-anchor="middle" font-size="12" fill="var(--ink)">“las niñas”</text>
+              <text x="250" y="122" text-anchor="middle" font-size="12" fill="var(--ink)">“cantaban”</text>
+              <text x="90" y="142" text-anchor="middle" font-size="10" fill="var(--ink-soft)">niñ- + -a (fem.) + -s (pl.)</text>
+              <text x="250" y="142" text-anchor="middle" font-size="10" fill="var(--ink-soft)">cant- + -aba (pret.) + -n (pl.)</text>
+            </svg>
+            <figcaption><strong>Figura 3.</strong> Análisis morfosintáctico de “las niñas cantaban”: función sintáctica (arriba) y morfemas (abajo).</figcaption>
+          </figure>
+        </div>
+      </details>
+
+      <details class="card" data-block="a">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M7 8c-2 1-3 3-3 5.5S6 18 8 18M17 8c-2 1-3 3-3 5.5s2 4.5 4 4.5"/></svg></span>Puntuación<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Conjunto de signos gráficos que organiza el texto, señala pausas y entonación, y aclara relaciones lógicas entre ideas.</p>
+          <ul>
+            <li><strong>Punto:</strong> cierra una oración con sentido completo.</li>
+            <li><strong>Coma:</strong> separa elementos de una serie, incisos y aclaraciones.</li>
+            <li><strong>Punto y coma:</strong> separa proposiciones relacionadas o elementos de una lista compleja.</li>
+            <li><strong>Dos puntos:</strong> anuncian una enumeración, cita o consecuencia.</li>
+            <li><strong>Signos de interrogación / exclamación:</strong> en español se usan de forma doble (¿…? ¡…!).</li>
+            <li><strong>Comillas, guion, paréntesis:</strong> citas, incisos y aclaraciones adicionales.</li>
+          </ul>
+          <p><strong>Errores frecuentes:</strong> separar sujeto y verbo con coma; abusar de comas en oraciones largas; confundir punto y seguido con punto y aparte.</p>
+        </div>
+      </details>
+    </div>
+
+    <div class="divider">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-b)" stroke-width="1.8"><path d="M7 6c-2 1.5-3 4-2 8 1 3-1 5-3 6M13 6c-2 1.5-3 4-2 8 1 3-1 5-3 6M20 6l-1.5 4"/></svg>
+    </div>
+
+    <div class="bloque" data-block="b" id="bloqueB">
+      <div class="block-head-row">
+        <div class="block-head">
+          <span class="n">Bloque B</span>
+          <h2>Redacción y ensayo</h2>
+          <p>Técnicas para condensar, reformular y argumentar ideas por escrito.</p>
+        </div>
+        <button class="listen-btn" data-listen="b"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="listen-label">Escuchar bloque</span></button>
+      </div>
+
+      <details class="card" data-block="b" open>
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13zM20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5c.8 0 1.5-.7 1.5-1.5v-13z"/></svg></span>El resumen<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Reescritura breve y objetiva de un texto que conserva las ideas principales, con palabras propias del redactor, <strong>sin</strong> opiniones ni valoraciones personales.</p>
+          <p><strong>Pasos:</strong> lectura comprensiva → subrayado de ideas principales → jerarquización de la información → redacción coherente y breve.</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="b">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3l9 5-9 5-9-5 9-5zM3 13l9 5 9-5"/></svg></span>La síntesis<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Reelaboración personal que integra y relaciona las ideas centrales de una o varias fuentes, mostrando la comprensión crítica del autor.</p>
+          <p>A diferencia del resumen, la síntesis <strong>puede reorganizar el orden original</strong> y establecer relaciones nuevas entre ideas de distintas fuentes.</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="b">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg></span>La paráfrasis<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Reformulación de un texto o fragmento con palabras propias, manteniendo el significado original. Se usa para explicar, simplificar o citar ideas ajenas sin copiarlas literalmente, evitando el plagio.</p>
+          <p><strong>Tipos:</strong> mecánica (sustitución por sinónimos) y constructiva (cambia también el orden y la estructura sintáctica).</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="b">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>El argumento<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Razonamiento que se ofrece para sostener o rechazar una tesis, compuesto por premisas y una conclusión.</p>
+          <p><strong>Estructura:</strong> tesis → argumentos (razones) → evidencias o ejemplos → conclusión.</p>
+          <p><strong>Tipos comunes:</strong> de autoridad, de ejemplificación, causal, analógico, estadístico.</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="b">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg></span>La descripción<span class="chev">›</span></summary>
+        <div class="card-body">
+          <ul>
+            <li><strong>Objetiva</strong> (técnica, científica): precisa, sin valoraciones.</li>
+            <li><strong>Subjetiva</strong> (literaria): incorpora la mirada e impresión del autor.</li>
+          </ul>
+          <p>Variantes clásicas: <strong>topografía</strong> (lugares), <strong>prosopografía</strong> (rasgos físicos), <strong>etopeya</strong> (rasgos morales/psicológicos), <strong>retrato</strong> (combina ambas).</p>
+        </div>
+      </details>
+
+      <details class="card" data-block="b">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H12v16H5.5A1.5 1.5 0 0 1 4 18.5v-13zM20 5.5c0-.8-.7-1.5-1.5-1.5H12v16h6.5c.8 0 1.5-.7 1.5-1.5v-13z"/></svg></span>El ensayo<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Texto argumentativo en prosa que expone, analiza e interpreta un tema desde una perspectiva personal y crítica, con rigor pero sin la exhaustividad de un tratado científico.</p>
+          <p><strong>Estructura:</strong></p>
+          <ul>
+            <li><strong>Introducción:</strong> presenta el tema y la tesis.</li>
+            <li><strong>Desarrollo:</strong> despliega argumentos, evidencias y contraargumentos.</li>
+            <li><strong>Conclusión:</strong> sintetiza y cierra la reflexión.</li>
+          </ul>
+          <p><strong>Características:</strong> subjetividad razonada, libertad temática y de estilo, tono reflexivo, coherencia y cohesión argumentativa, brevedad relativa.</p>
+          <figure class="figure">
+            <svg viewBox="0 0 460 110" xmlns="http://www.w3.org/2000/svg" font-family="var(--font-body)">
+              <rect x="10" y="30" width="130" height="50" rx="10" fill="var(--c-a-bg)" stroke="var(--c-a)" stroke-width="2"/>
+              <text x="75" y="60" text-anchor="middle" font-weight="700" font-size="12" fill="var(--ink)">Introducción</text>
+              <path d="M144 55h30" stroke="var(--ink-soft)" stroke-width="1.8" marker-end="url(#arrow)"/>
+              <rect x="178" y="20" width="130" height="70" rx="10" fill="var(--c-b-bg)" stroke="var(--c-b)" stroke-width="2"/>
+              <text x="243" y="52" text-anchor="middle" font-weight="700" font-size="12" fill="var(--ink)">Desarrollo</text>
+              <text x="243" y="68" text-anchor="middle" font-size="10" fill="var(--ink-soft)">argumentos + evidencias</text>
+              <path d="M312 55h30" stroke="var(--ink-soft)" stroke-width="1.8" marker-end="url(#arrow)"/>
+              <rect x="346" y="30" width="104" height="50" rx="10" fill="var(--c-c-bg)" stroke="var(--c-c)" stroke-width="2"/>
+              <text x="398" y="60" text-anchor="middle" font-weight="700" font-size="12" fill="var(--ink)">Conclusión</text>
+              <defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="5" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 Z" fill="var(--ink-soft)"/></marker></defs>
+            </svg>
+            <figcaption><strong>Figura 4.</strong> Estructura argumentativa del ensayo: introducción, desarrollo y conclusión.</figcaption>
+          </figure>
+        </div>
+      </details>
+    </div>
+
+  </section>
+
+  <!-- ===================== UNIDAD 2 ===================== -->
+  <section id="unidad2" class="unit">
+
+    <div class="bloque" data-block="c" id="bloqueC">
+      <div class="block-head-row">
+        <div class="block-head">
+          <span class="n">Bloque C</span>
+          <h2>Comunicación no verbal y comunicación artefactual</h2>
+          <p>Toda la información que transmitimos sin usar palabras. Toca cada tarjeta para ver la explicación.</p>
+        </div>
+        <button class="listen-btn" data-listen="c"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="listen-label">Escuchar bloque</span></button>
+      </div>
+
+      <p style="color:var(--ink-soft); max-width:64ch;">La comunicación no verbal transmite información mediante el cuerpo, el espacio, el tiempo y los objetos. La <strong>comunicación artefactual</strong> es un caso particular: la información que transmiten los objetos, la vestimenta o la decoración —estatus, identidad, pertenencia a un grupo, estado de ánimo—.</p>
+
+      <figure class="figure">
+        <svg viewBox="0 0 420 170" xmlns="http://www.w3.org/2000/svg" font-family="var(--font-body)">
+          <circle cx="110" cy="60" r="22" fill="var(--c-a-bg)" stroke="var(--c-a)" stroke-width="2"/>
+          <path d="M75 150c0-32 18-56 35-56s35 24 35 56" fill="var(--c-a-bg)" stroke="var(--c-a)" stroke-width="2"/>
+          <circle cx="310" cy="60" r="22" fill="var(--c-c-bg)" stroke="var(--c-c)" stroke-width="2"/>
+          <path d="M275 150c0-32 18-56 35-56s35 24 35 56" fill="var(--c-c-bg)" stroke="var(--c-c)" stroke-width="2"/>
+          <line x1="115" y1="58" x2="305" y2="58" stroke="var(--ink)" stroke-width="1.6" stroke-dasharray="4 5"/>
+          <text x="210" y="46" text-anchor="middle" font-size="10.5" fill="var(--ink-soft)">contacto visual</text>
+          <path d="M118 118c14-8 26-8 34 0" stroke="var(--c-b)" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+          <text x="136" y="140" text-anchor="middle" font-size="10" fill="var(--ink-soft)">gesto</text>
+          <path d="M300 30q30-16 45 6" stroke="var(--c-d)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-dasharray="2 5"/>
+          <text x="330" y="20" text-anchor="middle" font-size="10" fill="var(--ink-soft)">postura</text>
+        </svg>
+        <figcaption><strong>Figura 5.</strong> Elementos clave de la comunicación no verbal en una interacción cara a cara.</figcaption>
+      </figure>
+
+      <div class="flip-grid" id="flipGrid"></div>
+
+      <p style="color:var(--ink-soft); font-size:.92rem; margin-top:22px;"><strong style="color:var(--ink);">Comunicación artefactual — ejemplos de objetos con carga simbólica:</strong></p>
+      <div class="obj-row">
+        <div class="obj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="7" cy="15" r="3.4"/><circle cx="17" cy="15" r="3.4"/><path d="M10.4 15h3.2M4 15l-1-7h4M20 15l1-7h-4"/></svg><span>Gafas</span></div>
+        <div class="obj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="4" y="9" width="16" height="11" rx="2"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/></svg><span>Bolso</span></div>
+        <div class="obj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="12" cy="12" r="7"/><path d="M12 9v3l2 2"/><path d="M9 3h6M9 21h6"/></svg><span>Reloj</span></div>
+        <div class="obj"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 6L9 17l-5-5"/></svg><span>Insignia</span></div>
+      </div>
+    </div>
+
+    <div class="divider">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--c-d)" stroke-width="1.8"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg>
+    </div>
+
+    <div class="bloque" data-block="d" id="bloqueD">
+      <div class="block-head-row">
+        <div class="block-head">
+          <span class="n">Bloque D</span>
+          <h2>Paralingüística</h2>
+          <p>Los rasgos de la voz que acompañan al mensaje verbal y que también comunican.</p>
+        </div>
+        <button class="listen-btn" data-listen="d"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 9v6h4l5 4V5L8 9H4z"/><path d="M17 8a5 5 0 0 1 0 8"/></svg><span class="listen-label">Escuchar bloque</span></button>
+      </div>
+
+      <figure class="figure">
+        <svg viewBox="0 0 420 130" xmlns="http://www.w3.org/2000/svg" font-family="var(--font-body)">
+          <rect x="14" y="46" width="26" height="38" rx="13" fill="var(--c-d-bg)" stroke="var(--c-d)" stroke-width="2"/>
+          <path d="M10 66a17 17 0 0 0 34 0M27 100v14M18 114h18" stroke="var(--c-d)" stroke-width="2" fill="none" stroke-linecap="round"/>
+          <circle cx="27" cy="65" r="55" fill="none" stroke="var(--line)" stroke-width="1.6" stroke-dasharray="2 8"/>
+          <circle cx="27" cy="65" r="85" fill="none" stroke="var(--line)" stroke-width="1.6" stroke-dasharray="2 8"/>
+          <g stroke="var(--c-b)" stroke-width="5" stroke-linecap="round">
+            <line x1="130" y1="45" x2="130" y2="85"/>
+            <line x1="150" y1="30" x2="150" y2="100"/>
+            <line x1="170" y1="52" x2="170" y2="78"/>
+            <line x1="190" y1="20" x2="190" y2="110"/>
+            <line x1="210" y1="40" x2="210" y2="90"/>
+            <line x1="230" y1="55" x2="230" y2="75"/>
+            <line x1="250" y1="15" x2="250" y2="115"/>
+            <line x1="270" y1="35" x2="270" y2="95"/>
+            <line x1="290" y1="50" x2="290" y2="80"/>
+            <line x1="310" y1="25" x2="310" y2="105"/>
+            <line x1="330" y1="45" x2="330" y2="85"/>
+            <line x1="350" y1="58" x2="350" y2="72"/>
+            <line x1="370" y1="38" x2="370" y2="92"/>
+            <line x1="390" y1="52" x2="390" y2="78"/>
+          </g>
+        </svg>
+        <figcaption><strong>Figura 6.</strong> La voz irradia información paralingüística —tono, volumen, timbre y ritmo— además del contenido verbal del mensaje.</figcaption>
+      </figure>
+
+      <details class="card" data-block="d" open>
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></span>Funciones de la voz<span class="chev">›</span></summary>
+        <div class="card-body">
+          <ul>
+            <li><strong>Comunicativa / informativa:</strong> vehículo del contenido léxico del mensaje.</li>
+            <li><strong>Expresiva-emocional:</strong> transmite estados de ánimo (alegría, enojo, duda).</li>
+            <li><strong>Identificadora:</strong> revela edad, sexo, procedencia geográfica o estado de salud.</li>
+            <li><strong>Reguladora:</strong> organiza los turnos de habla en la interacción.</li>
+          </ul>
+        </div>
+      </details>
+
+      <details class="card" data-block="d">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12h2l2-6 3 14 3-11 2 3h8"/></svg></span>Características de la voz<span class="chev">›</span></summary>
+        <div class="card-body">
+          <p>Prueba el simulador: mueve los controles y observa cómo cambiaría la descripción de la voz.</p>
+          <div class="voice-demo">
+            <h3>Simulador de rasgos vocales</h3>
+            <p class="note">Una demostración conceptual: no reproduce sonido, solo ilustra cómo varían las características de la voz.</p>
+            <div class="sliders">
+              <div class="slider-row"><label>Tono <span id="tonoVal">Medio</span></label><input type="range" min="0" max="100" value="50" id="tonoRange"></div>
+              <div class="slider-row"><label>Volumen <span id="volVal">Medio</span></label><input type="range" min="0" max="100" value="50" id="volRange"></div>
+              <div class="slider-row"><label>Ritmo / velocidad <span id="ritmoVal">Medio</span></label><input type="range" min="0" max="100" value="50" id="ritmoRange"></div>
+            </div>
+            <div class="wave-box" id="waveBox"></div>
+            <p class="voice-read" id="voiceRead"></p>
+          </div>
+        </div>
+      </details>
+
+      <details class="card" data-block="d">
+        <summary><span class="icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg></span>Habilidades de articulación de la voz<span class="chev">›</span></summary>
+        <div class="card-body">
+          <ul>
+            <li><strong>Dicción:</strong> claridad en la pronunciación de cada sonido.</li>
+            <li><strong>Vocalización:</strong> apertura y precisión articulatoria de vocales y consonantes.</li>
+            <li><strong>Modulación:</strong> variación consciente del tono y volumen para dar énfasis.</li>
+            <li><strong>Proyección:</strong> capacidad de que la voz llegue con claridad sin necesidad de gritar.</li>
+          </ul>
+        </div>
+      </details>
+    </div>
+
+  </section>
+
+  <!-- ===================== QUIZ ===================== -->
+  <section id="quiz" class="unit">
+    <div class="quiz-section">
+      <div class="quiz-head">
+        <span class="kicker">Autoevaluación</span>
+        <h2>Pon a prueba lo aprendido</h2>
+        <p>10 preguntas de opción múltiple sobre las dos unidades. Responde todas y pulsa “Corregir”.</p>
+      </div>
+      <form id="quizForm"></form>
+      <div class="quiz-actions">
+        <button type="button" class="btn btn-primary" id="checkBtn">Corregir respuestas</button>
+        <button type="button" class="btn btn-ghost" id="resetBtn">Reiniciar</button>
+      </div>
+      <div class="score-panel" id="scorePanel">
+        <div class="big" id="scoreBig">0/10</div>
+        <p id="scoreMsg"></p>
+        <p class="best" id="bestScore"></p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>Guía de estudio · Comunicación y Lenguaje · Contabilidad y Auditoría</footer>
+
+<div class="audio-bar" id="audioBar">
+  <button id="audioPlayPause" aria-label="Pausar/Reanudar"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg></button>
+  <span class="label" id="audioLabel">Reproduciendo…</span>
+  <button class="stop-btn" id="audioStop" aria-label="Detener"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</div>
+
+<script>
+(function(){
+  // ---------- tabs ----------
+  const tabs = document.querySelectorAll('.tab-btn');
+  const units = document.querySelectorAll('.unit');
+  function activate(id){
+    units.forEach(u=>u.classList.toggle('is-active', u.id===id));
+    tabs.forEach(t=>t.classList.toggle('is-active', t.dataset.target===id));
+    window.scrollTo({top:0, behavior:'smooth'});
+  }
+  tabs.forEach(t=>t.addEventListener('click', ()=>activate(t.dataset.target)));
+  document.querySelectorAll('[data-goto]').forEach(b=>{
+    b.addEventListener('click', ()=>activate(b.dataset.goto));
+  });
+
+  // ---------- theme toggle ----------
+  const themeBtn = document.getElementById('themeBtn');
+  try{
+    const saved = localStorage.getItem('cl_theme');
+    if(saved) document.documentElement.setAttribute('data-theme', saved);
+  }catch(e){}
+  themeBtn.addEventListener('click', ()=>{
+    const cur = document.documentElement.getAttribute('data-theme');
+    const next = cur === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', next);
+    try{ localStorage.setItem('cl_theme', next); }catch(e){}
+  });
+
+  // ---------- Jakobson chips ----------
+  const functions = [
+    {name:'Referencial', focus:'el contexto', def:'Centrada en el referente o contexto: informa sobre hechos.', ex:'“La reunión es a las 15h.”'},
+    {name:'Emotiva', focus:'el emisor', def:'Centrada en el emisor: expresa sentimientos o actitudes.', ex:'“¡Qué alivio, por fin!”'},
+    {name:'Conativa', focus:'el receptor', def:'Centrada en el receptor: busca provocar una reacción.', ex:'“Cierra la puerta, por favor.”'},
+    {name:'Fática', focus:'el canal', def:'Centrada en el canal: verifica o mantiene el contacto.', ex:'“¿Me escuchas bien?”'},
+    {name:'Metalingüística', focus:'el código', def:'Centrada en el código: el lenguaje se explica a sí mismo.', ex:'“‘Efímero’ significa que dura poco.”'},
+    {name:'Poética', focus:'el mensaje', def:'Centrada en el mensaje mismo, en su forma y estética.', ex:'Un verso, un juego de palabras, un eslogan.'}
+  ];
+  const chipsBox = document.getElementById('jakobsonChips');
+  const chipPanel = document.getElementById('jakobsonPanel');
+  functions.forEach((f)=>{
+    const b = document.createElement('button');
+    b.type='button'; b.className='chip'; b.textContent=f.name;
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#jakobsonChips .chip').forEach(c=>c.classList.remove('is-active'));
+      b.classList.add('is-active');
+      chipPanel.innerHTML = '<span class="fn-name">'+f.name+' — centrada en '+f.focus+'</span>'+f.def+'<br><em>Ejemplo: '+f.ex+'</em>';
+      chipPanel.classList.add('is-visible');
+    });
+    chipsBox.appendChild(b);
+  });
+
+  // ---------- flip cards ----------
+  const flips = [
+    {icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z"/><circle cx="12" cy="12" r="2.6"/></svg>', title:'Contacto visual', back:'Regula el turno de habla, expresa interés o atención, muestra dominancia o sumisión y transmite emociones. Su duración “apropiada” varía entre culturas.'},
+    {icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6M16 8a3 3 0 1 1 3.6 2.9M21 20c0-2.5-1.8-4.6-4.2-5.4"/></svg>', title:'Posturas y movimientos', back:'La postura refleja apertura o cierre, interés o desinterés. Ekman y Friesen clasifican los gestos en emblemas, ilustradores, reguladores, adaptadores y muestras de afecto.'},
+    {icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5L18 18M18 6l-2.5 2.5M8.5 15.5L6 18"/></svg>', title:'Gestos y expresión facial', back:'Canal privilegiado de emociones. Ekman identificó expresiones consideradas universales: alegría, tristeza, ira, miedo, sorpresa y asco. Las microexpresiones son breves e involuntarias.'},
+    {icon:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>', title:'Comunicación artefactual', back:'Información transmitida por objetos, vestimenta o decoración: comunica estatus, identidad, pertenencia a un grupo o estado de ánimo, sin usar palabras ni el cuerpo.'}
+  ];
+  const flipGrid = document.getElementById('flipGrid');
+  flips.forEach(f=>{
+    const card = document.createElement('div');
+    card.className='flip-card';
+    card.innerHTML = '<div class="flip-inner">'+
+      '<div class="flip-face flip-front"><span class="icon">'+f.icon+'</span><h3>'+f.title+'</h3><span class="hint">Toca para ver más</span></div>'+
+      '<div class="flip-face flip-back"><strong>'+f.title+'</strong>'+f.back+'</div>'+
+    '</div>';
+    card.addEventListener('click', ()=>card.classList.toggle('is-flipped'));
+    flipGrid.appendChild(card);
+  });
+
+  // ---------- voice demo ----------
+  const tonoRange=document.getElementById('tonoRange'), volRange=document.getElementById('volRange'), ritmoRange=document.getElementById('ritmoRange');
+  const tonoVal=document.getElementById('tonoVal'), volVal=document.getElementById('volVal'), ritmoVal=document.getElementById('ritmoVal');
+  const waveBox=document.getElementById('waveBox'), voiceRead=document.getElementById('voiceRead');
+  const bars = [];
+  for(let i=0;i<28;i++){ const b=document.createElement('i'); waveBox.appendChild(b); bars.push(b); }
+  function label(v){ return v<34?'Bajo':(v<67?'Medio':'Alto'); }
+  function renderWave(){
+    const tono = +tonoRange.value, vol = +volRange.value, ritmo = +ritmoRange.value;
+    tonoVal.textContent = label(tono) + (tono<34?' (grave)':(tono>66?' (agudo)':''));
+    volVal.textContent = label(vol);
+    ritmoVal.textContent = label(ritmo) + (ritmo<34?' (pausado)':(ritmo>66?' (rápido)':''));
+    bars.forEach((b,i)=>{
+      const base = 8 + (vol/100)*46;
+      const wobble = Math.sin((i/28)*Math.PI*2*(1+tono/50)) * (10 + vol/6);
+      b.style.height = Math.max(6, base + wobble) + 'px';
+      b.style.opacity = 0.45 + (vol/100)*0.55;
+      b.style.animationDuration = (1.4 - (ritmo/100)*0.9) + 's';
+    });
+    voiceRead.innerHTML = 'Con estos valores, la voz descrita sonaría <strong>'+label(tono).toLowerCase()+' en tono</strong>, <strong>'+label(vol).toLowerCase()+' en volumen</strong> y con un <strong>ritmo '+label(ritmo).toLowerCase()+'</strong>.';
+  }
+  [tonoRange,volRange,ritmoRange].forEach(r=>r.addEventListener('input', renderWave));
+  renderWave();
+
+  // ---------- quiz ----------
+  const questions = [
+    {q:'¿Qué elemento del proceso comunicativo corresponde al sistema de signos compartido entre emisor y receptor?', opts:['Canal','Código','Contexto','Ruido'], correct:1},
+    {q:'Según la tricotomía de Saussure, ¿cómo se llama la realización individual y concreta de la lengua?', opts:['Lenguaje','Habla','Discurso','Código'], correct:1},
+    {q:'La función del lenguaje centrada en el receptor, que busca provocar una reacción, se llama:', opts:['Referencial','Fática','Conativa','Poética'], correct:2},
+    {q:'¿Cuál de las siguientes NO es una característica del lenguaje verbal?', opts:['Arbitrariedad del signo','Doble articulación','Comunicación exclusivamente gestual','Productividad'], correct:2},
+    {q:'¿Cuál es la diferencia clave entre resumen y síntesis?', opts:['El resumen añade opiniones personales, la síntesis no','La síntesis integra y relaciona ideas de forma personal; el resumen solo condensa lo esencial','Son términos idénticos','El resumen siempre es más largo que la síntesis'], correct:1},
+    {q:'Reformular un texto con palabras propias, manteniendo el significado original y evitando el plagio, se llama:', opts:['Cita textual','Paráfrasis','Transcripción','Prosopografía'], correct:1},
+    {q:'En la estructura de un ensayo, ¿dónde se presenta la tesis del autor?', opts:['En la conclusión','En la introducción','En la bibliografía','Solo en el desarrollo'], correct:1},
+    {q:'El estudio de Mehrabian sobre el peso de los canales comunicativos se aplica específicamente a mensajes de:', opts:['Contenido técnico','Actitudes y sentimientos','Instrucciones escritas','Argumentos lógicos'], correct:1},
+    {q:'Según Ekman y Friesen, los gestos que sustituyen completamente a la palabra (como el saludo con la mano) se llaman:', opts:['Ilustradores','Adaptadores','Emblemas','Reguladores'], correct:2},
+    {q:'La cualidad de la voz que permite distinguir a una persona de otra incluso diciendo lo mismo se llama:', opts:['Tono','Timbre','Ritmo','Volumen'], correct:1}
+  ];
+  const form = document.getElementById('quizForm');
+  questions.forEach((item,qi)=>{
+    const card = document.createElement('div'); card.className='q-card';
+    let optsHtml='';
+    item.opts.forEach((o,oi)=>{
+      optsHtml += '<label class="opt" data-q="'+qi+'" data-o="'+oi+'"><input type="radio" name="q'+qi+'" value="'+oi+'"> '+o+'</label>';
+    });
+    card.innerHTML = '<span class="q-num">Pregunta '+(qi+1)+' de '+questions.length+'</span><p class="q-text">'+item.q+'</p>'+optsHtml;
+    form.appendChild(card);
+  });
+
+  const scorePanel=document.getElementById('scorePanel'), scoreBig=document.getElementById('scoreBig'), scoreMsg=document.getElementById('scoreMsg'), bestScoreEl=document.getElementById('bestScore');
+
+  document.getElementById('checkBtn').addEventListener('click', ()=>{
+    let score=0;
+    questions.forEach((item,qi)=>{
+      const chosen = form.querySelector('input[name="q'+qi+'"]:checked');
+      const chosenVal = chosen ? +chosen.value : null;
+      form.querySelectorAll('.opt[data-q="'+qi+'"]').forEach(optEl=>{
+        const oi = +optEl.dataset.o;
+        optEl.classList.remove('correct','wrong');
+        if(oi === item.correct) optEl.classList.add('correct');
+        else if(oi === chosenVal) optEl.classList.add('wrong');
+      });
+      if(chosenVal === item.correct) score++;
+    });
+    scoreBig.textContent = score+'/'+questions.length;
+    scoreMsg.textContent = score===questions.length ? '¡Excelente, dominas el tema!' : (score>=questions.length*0.6 ? 'Buen resultado, repasa lo que falló.' : 'Conviene repasar los bloques con más detalle.');
+    scorePanel.classList.add('is-visible');
+    try{
+      const prevBest = +(localStorage.getItem('cl_quiz_best')||0);
+      const best = Math.max(prevBest, score);
+      localStorage.setItem('cl_quiz_best', best);
+      bestScoreEl.textContent = 'Mejor puntaje guardado en este navegador: '+best+'/'+questions.length;
+    }catch(e){
+      bestScoreEl.textContent='';
+    }
+    scorePanel.scrollIntoView({behavior:'smooth', block:'center'});
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', ()=>{
+    form.reset();
+    form.querySelectorAll('.opt').forEach(o=>o.classList.remove('correct','wrong'));
+    scorePanel.classList.remove('is-visible');
+  });
+
+  // ---------- Audiolibro (Web Speech API) ----------
+  const blockLabels = { a:'Bloque A · Comunicación y lenguaje', b:'Bloque B · Redacción y ensayo', c:'Bloque C · Comunicación no verbal', d:'Bloque D · Paralingüística' };
+  const supportsSpeech = 'speechSynthesis' in window;
+  const audioBar = document.getElementById('audioBar');
+  const audioLabel = document.getElementById('audioLabel');
+  const audioPlayPause = document.getElementById('audioPlayPause');
+  const audioStop = document.getElementById('audioStop');
+  let currentKey = null;
+  let esVoice = null;
+
+  function loadVoices(){
+    if(!supportsSpeech) return;
+    const voices = speechSynthesis.getVoices();
+    esVoice = voices.find(v=>v.lang && v.lang.toLowerCase().startsWith('es')) || null;
+  }
+  if(supportsSpeech){
+    loadVoices();
+    speechSynthesis.onvoiceschanged = loadVoices;
+  }
+
+  function extractText(container){
+    const clone = container.cloneNode(true);
+    clone.querySelectorAll('svg, script, .listen-btn, input, .wave-box').forEach(n=>n.remove());
+    return clone.textContent.replace(/\s+/g,' ').trim();
+  }
+
+  function resetAllListenButtons(){
+    document.querySelectorAll('.listen-btn').forEach(b=>{
+      b.classList.remove('is-playing');
+      b.querySelector('.listen-label').textContent = 'Escuchar bloque';
+    });
+  }
+
+  function playPauseIcon(showPause){
+    audioPlayPause.innerHTML = showPause
+      ? '<svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>'
+      : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 5l12 7-12 7z"/></svg>';
+  }
+
+  function stopSpeech(){
+    if(supportsSpeech) speechSynthesis.cancel();
+    audioBar.classList.remove('is-visible');
+    resetAllListenButtons();
+    currentKey = null;
+  }
+
+  function startSpeech(key, btn){
+    if(!supportsSpeech){
+      alert('Tu navegador no admite lectura en voz alta (Web Speech API). Prueba con Chrome, Edge o Safari actualizados.');
+      return;
+    }
+    const container = document.querySelector('.bloque[data-block="'+key+'"]');
+    if(!container) return;
+    speechSynthesis.cancel();
+    resetAllListenButtons();
+    const text = extractText(container);
+    const utter = new SpeechSynthesisUtterance(text);
+    utter.lang = 'es-ES';
+    utter.rate = 0.96;
+    utter.pitch = 1;
+    if(esVoice) utter.voice = esVoice;
+    utter.onstart = ()=>{
+      currentKey = key;
+      btn.classList.add('is-playing');
+      btn.querySelector('.listen-label').textContent = 'Pausar';
+      audioLabel.textContent = blockLabels[key] || 'Reproduciendo…';
+      audioBar.classList.add('is-visible');
+      playPauseIcon(true);
+    };
+    utter.onend = ()=>{ stopSpeech(); };
+    utter.onerror = ()=>{ stopSpeech(); };
+    speechSynthesis.speak(utter);
+  }
+
+  document.querySelectorAll('[data-listen]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const key = btn.dataset.listen;
+      if(!supportsSpeech){
+        alert('Tu navegador no admite lectura en voz alta (Web Speech API). Prueba con Chrome, Edge o Safari actualizados.');
+        return;
+      }
+      if(currentKey === key && speechSynthesis.speaking){
+        if(speechSynthesis.paused){
+          speechSynthesis.resume();
+          btn.querySelector('.listen-label').textContent = 'Pausar';
+          playPauseIcon(true);
+        }else{
+          speechSynthesis.pause();
+          btn.querySelector('.listen-label').textContent = 'Reanudar';
+          playPauseIcon(false);
+        }
+        return;
+      }
+      startSpeech(key, btn);
+    });
+  });
+
+  audioPlayPause.addEventListener('click', ()=>{
+    if(!supportsSpeech || !currentKey) return;
+    if(speechSynthesis.paused){
+      speechSynthesis.resume();
+      playPauseIcon(true);
+      const btn = document.querySelector('[data-listen="'+currentKey+'"]');
+      if(btn) btn.querySelector('.listen-label').textContent = 'Pausar';
+    }else{
+      speechSynthesis.pause();
+      playPauseIcon(false);
+      const btn = document.querySelector('[data-listen="'+currentKey+'"]');
+      if(btn) btn.querySelector('.listen-label').textContent = 'Reanudar';
+    }
+  });
+  audioStop.addEventListener('click', stopSpeech);
+
+  window.addEventListener('beforeunload', ()=>{ if(supportsSpeech) speechSynthesis.cancel(); });
+})();
+</script>
+</body>
+</html>
